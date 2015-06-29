@@ -57,7 +57,7 @@
         <!-- Conatins the style information for the document. -->
         <blockTableStyle id="exampleTable">
             <blockValign value="TOP" />
-            <blockAlign value="LEFT" />
+            <blockAlignment value="LEFT" />
             <blockTopPadding length="2" />
             <blockBottomPadding length="2" />
             <blockLeftPadding length="3" />

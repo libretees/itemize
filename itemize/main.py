@@ -27,7 +27,7 @@ def fetchTable():
 def main(argv):
     # Load the RML template into the preprocessor.
     env = Environment(loader=PackageLoader('itemize.templates', 'example'))
-    template = env.get_template('template.prep')
+    template = env.get_template('template.rml')
 
     # Fetch table data.
     table = fetchTable()

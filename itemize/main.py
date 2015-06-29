@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from z3c.rml import rml2pdf
-import datetime
-import preppy
-import csv
 import sys
+import csv
+import datetime
+from jinja2 import Environment, PackageLoader
+from z3c.rml import rml2pdf
+
 
 def fetchTable():
     # Initialize the result array.
@@ -25,15 +26,18 @@ def fetchTable():
 
 def main(argv):
     # Load the RML template into the preprocessor.
-    template = preppy.getModule('itemize/template.prep')
+    env = Environment(loader=PackageLoader('itemize.templates', 'example'))
+    template = env.get_template('template.prep')
 
     # Fetch table data.
     table = fetchTable()
 
     # Do preprocessing.
-    rmlText = template.get(
-        datetime.datetime.now().strftime("%Y-%m-%d"), 'LibreTees', 
-        'www.libretees.com', 'contact@libretees.com', table)
+    rmlText = template.render({'date':    datetime.datetime.now().strftime("%Y-%m-%d"),
+                               'name':    'LibreTees',
+                               'website': 'www.libretees.com',
+                               'email':   'contact@libretees.com',
+                               'table':   table,})
 
     # Generate PDF output.
     pdf = rml2pdf.parseString(rmlText)

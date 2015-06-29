@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python2
 # -*- coding: utf-8 -*-
 import sys
 import csv
@@ -42,8 +42,8 @@ def main(argv):
 
     # Load the RML template into the preprocessor.
     logging.info('Loading RML Template.')
-    env = Environment(loader=PackageLoader('itemize.templates', 'example'))
-    template = env.get_template('template.rml')
+    env = Environment(loader=PackageLoader('itemize', 'templates'))
+    template = env.get_template('example/template.rml')
     logging.info('Loaded RML Template.')
 
     # Fetch table data.

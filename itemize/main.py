@@ -1,51 +1,46 @@
-import time
-from reportlab.lib.enums import TA_CENTER
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units import cm
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from z3c.rml import rml2pdf
+import datetime
+import preppy
+import csv
+import sys
+
+def fetchTable():
+    # Initialize the result array.
+    data = []
  
-# Setup the document template ...
-doc = SimpleDocTemplate("output.pdf", 
-    rightMargin=1.5*cm, leftMargin=1.5*cm, topMargin=1.5*cm, bottomMargin=1.5*cm)
+    # Parse content.
+    with open('itemize/data.csv', 'r') as csvFile:
+        for row in csv.reader(csvFile, delimiter=','):
+            rowData = []
  
-# ... and initialize the content block.
-story=[]
+            for key, col in enumerate(row):
+                rowData.append(col)
  
-# Add your logo to the page head. 
-story.append(Image('itemize/logo.png', 2*cm, 2*cm))
- 
-# Fetch the document stylesheet ...
-styles = getSampleStyleSheet()
- 
-# ... and add the justify style.
-styles.add(ParagraphStyle(name='Center', alignment=TA_CENTER))
- 
-# Add the document title to the content block.
-story.append(Spacer(0.1*cm, 2*cm))
-story.append(Paragraph('<font size=16>My first Report</font>', styles["Center"]))
-story.append(Spacer(0.1*cm, 0.5*cm))
- 
-# Fetch the current date ...
-timeStr = '<font size=12>{time}</font>'.format(time = time.ctime())
- 
-# ... and append it to the content block followed by some space.
-story.append(Paragraph(timeStr, styles["Center"]))
-story.append(Spacer(0.1*cm, 1*cm))
- 
-# Setup some normal text ...
-text = """This is my first PDF report generated with ReportLab. I think it looks really great 
-for a quick and dirty solution. But this is just a first, quick example you could great 
-more complex documents using this library.
-"""
- 
-# ... and add it to the document.
-story.append(Paragraph(text, styles["Normal"]))
-story.append(Spacer(0.1*cm, 3*cm))
- 
-# And some greetings.
-story.append(Paragraph("Best regards<br />LibreTees", styles["Normal"]))
- 
-# To generate the content and write it to 
-# the *.pdf file (in this case firstDoc.pdf) 
-# just call the build method.
-doc.build(story)
+            data.append(rowData)
+
+    return data
+
+
+def main(argv):
+    # Load the RML template into the preprocessor.
+    template = preppy.getModule('itemize/template.prep')
+
+    # Fetch table data.
+    table = fetchTable()
+
+    # Do preprocessing.
+    rmlText = template.get(
+        datetime.datetime.now().strftime("%Y-%m-%d"), 'LibreTees', 
+        'www.libretees.com', 'contact@libretees.com', table)
+
+    # Generate PDF output.
+    pdf = rml2pdf.parseString(rmlText)
+
+    # Save the PDF.
+    with open('output.pdf', 'w') as pdfFile:
+        pdfFile.write(pdf.read())
+
+if __name__ == '__main__':
+    main(sys.argv[1:])

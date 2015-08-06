@@ -52,9 +52,9 @@ def main(argv):
     # Do preprocessing.
     logging.info('Rendering template.')
     rmlText = template.render({'date':    datetime.datetime.now().strftime("%Y-%m-%d"),
-                               'name':    'LibreTees',
-                               'website': 'www.libretees.com',
-                               'email':   'contact@libretees.com',
+                               'name':    'Company',
+                               'website': 'www.company.com',
+                               'email':   'sales@company.com',
                                'table':   table,})
     logging.info('Rendered template.')
 
@@ -68,6 +68,7 @@ def main(argv):
     with open('output.pdf', 'w') as pdfFile:
         pdfFile.write(pdf.read())
     logging.info('Saved PDF document.')
+
 
 if __name__ == '__main__':
     main(sys.argv[1:])

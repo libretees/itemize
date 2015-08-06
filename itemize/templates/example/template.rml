@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE document SYSTEM "rml.dtd">
-<document>
+
+<document filename="tag-place.pdf" xmlns:doc="http://namespaces.zope.org/rml/doc">
     <!-- Don't remove any of the following main blocks, -->
     <!-- otherwise the document will not compile. -->
     <template>
@@ -91,7 +91,9 @@
 
         <setNextTemplate name="contentPage" />
         <nextFrame />
-
+        <illustration width="10cm" height="1cm">
+            <barCode x="1cm" y="0" code="Code128" barHeight="0.5in" barWidth="0.009in">AB-12345678</barCode>
+        </illustration>
         <para>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim

@@ -1,37 +1,57 @@
-#!/usr/bin/python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import sys
+
 import csv
 import datetime
 import logging
+import os
+import sys
 from argparse import ArgumentParser
-from jinja2 import Environment, PackageLoader
+from jinja2 import Environment, PackageLoader, FileSystemLoader
 from z3c.rml import rml2pdf
 
 logger = logging.getLogger(__name__)
 
-def fetchTable():
+def fetch_table():
     # Initialize the result array.
-    data = []
+    csv_data = []
  
+    # Open the CSV file.
+    csv_file = None
+    path = os.path.join('itemize', 'data.csv')
+    try:
+        csv_file = open(path, 'r')
+    except IOError as e:
+        logger.debug('Could not open CSV file from path (%s)' % path)
+
+    if csv_file is None:
+        try:
+            csv_file = open('data.csv', 'r')
+        except IOError as e:
+            sys.exit(str(e))
+
     # Parse content.
-    with open('itemize/data.csv', 'r') as csvFile:
-        for row in csv.reader(csvFile, delimiter=','):
-            rowData = []
- 
-            for key, col in enumerate(row):
-                rowData.append(col)
- 
-            data.append(rowData)
+    for row in csv.reader(csv_file, delimiter=','):
+        row_data = []
+        for column in row:
+            row_data.append(column)
+        csv_data.append(row_data)
 
-    return data
+    # Close CSV file.
+    csv_file.close()
+
+    return csv_data
 
 
-def main(argv):
+def parse_arguments():
     # Parse arguments.
     parser = ArgumentParser(description='Create data-driven receipts.')
-    parser.add_argument('-d', '--log', dest='loglevel', action='store', default='ERROR',
-                        help='set log level [DEBUG, INFO, WARNING, ERROR, CRITICAL] (default: ERROR)')
+    parser.add_argument(
+        '-d', '--log', dest='loglevel', action='store', default='ERROR',
+        help=(
+            'set log level [DEBUG, INFO, WARNING, ERROR, CRITICAL] '
+            '(default: ERROR)')
+    )
     args = parser.parse_args()
 
     # Configure logger.
@@ -40,33 +60,52 @@ def main(argv):
         raise ValueError('Invalid log level: %s' % args.loglevel.upper())
     logging.basicConfig(level=numeric_level)
 
+
+def load_template(template_name):
     # Load the RML template into the preprocessor.
     logging.info('Loading RML Template.')
-    env = Environment(loader=PackageLoader('itemize', 'templates'))
-    template = env.get_template('example/template.rml')
+    env = None
+    try:
+        logging.debug('Loading templates package with PackageLoader.')
+        env = Environment(loader=PackageLoader('itemize', 'templates'))
+    except ImportError as e:
+        logging.debug('Loading templates package with FileSystemLoader.')
+        env = Environment(loader=FileSystemLoader('templates'))
+
+    template = env.get_template('%s/template.rml' % template_name)
     logging.info('Loaded RML Template.')
 
+    return template
+
+
+def main(argv):
+
+    parse_arguments()
+    template = load_template('example')
+
     # Fetch table data.
-    table = fetchTable()
+    table = fetch_table()
 
     # Do preprocessing.
     logging.info('Rendering template.')
-    rmlText = template.render({'date':    datetime.datetime.now().strftime("%Y-%m-%d"),
-                               'name':    'Company',
-                               'website': 'www.company.com',
-                               'email':   'sales@company.com',
-                               'table':   table,})
+    rml_text = template.render({
+        'date': datetime.datetime.now().strftime("%Y-%m-%d"),
+        'name': 'Company',
+        'website': 'www.company.com',
+        'email': 'sales@company.com',
+        'table': table
+    })
     logging.info('Rendered template.')
 
     # Generate PDF output.
     logging.info('Generating PDF document.')
-    pdf = rml2pdf.parseString(rmlText)
+    pdf = rml2pdf.parseString(rml_text)
     logging.info('Generated PDF document.')
 
     # Save the PDF.
     logging.info('Saving PDF document.')
-    with open('output.pdf', 'w') as pdfFile:
-        pdfFile.write(pdf.read())
+    with open('output.pdf', 'wb') as pdf_file:
+        pdf_file.write(pdf.read())
     logging.info('Saved PDF document.')
 
 

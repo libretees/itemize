@@ -72,7 +72,7 @@ def load_template(template_name):
         logging.debug('Loading templates package with FileSystemLoader.')
         env = Environment(loader=FileSystemLoader('templates'))
 
-    template = env.get_template('%s/template.prep' % template_name)
+    template = env.get_template('%s/template.rml.jinja2' % template_name)
     logging.info('Loaded RML Template.')
 
     return template

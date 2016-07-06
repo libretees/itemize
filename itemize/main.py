@@ -81,7 +81,7 @@ def load_template(template_name):
 def main(argv):
 
     parse_arguments()
-    template = load_template('example')
+    template = load_template('packing')
 
     # Fetch table data.
     table = fetch_table()

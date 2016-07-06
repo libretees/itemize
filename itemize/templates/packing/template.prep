@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE document SYSTEM "rml.dtd">
+
+<document filename="packing-slip.pdf" xmlns:doc="http://namespaces.zope.org/rml/doc">
+    <!-- Don't remove any of the following main blocks, -->
+    <!-- otherwise the document will not compile. -->
+    <template pagesize="(6in, 4in)" showBoundary="1">
+        <pageTemplate id="main">
+            <pageGraphics>
+                <fill color="#eeeeee"/>
+                <rect x="0in" y="3.25in" height="0.75in" width="6in" stroke="0" fill="1"/>
+
+                <fill color="#444444"/>
+                <setFont name="Helvetica-Bold" size="18"/>
+                <drawString x="0.25in" y="3.625in">Your Invoice</drawString>
+
+                <fill color="#444444"/>
+                <setFont name="Helvetica-Bold" size="10"/>
+                <drawString x="0.734375in" y="3.4375in">order 72e1c629</drawString>
+
+                <fill color="#444444"/>
+                <setFont name="Helvetica" size="10"/>
+                <image file="itemize/templates/packing/notice.png" x="3.875in" y="3.46875in" width="0.25in" height="0.25in"/>
+                <drawString x="4.15625in" y="3.64375in">Your order has been split</drawString>
+                <drawString x="4.203125in" y="3.484375in">into multiple shipments.</drawString>
+
+                <fill color="#444444"/>
+                <setFont name="Helvetica-Bold" size="10"/>
+                <drawString x="2.5in" y="3in">shipped to:</drawString>
+                <drawString x="2.5in" y="2.75in">billed to:</drawString>
+
+                <fill color="#444444"/>
+                <setFont name="Helvetica-Bold" size="10"/>
+                <drawString x="4.28125in" y="1.125in">subtotal:</drawString>
+                <drawString x="3.984375in" y="0.9375in">tax collected:</drawString>
+                <drawString x="4.25in" y="0.75in">shipping:</drawString>
+                <!--<drawString x="4.0in" y="0.6875in">amount paid:</drawString>-->
+                <drawString x="4.0in" y="0.5625in">amount paid:</drawString>
+
+                <fill color="#eeeeee"/>
+                <rect x="3.5625in" y="0.25in" height="0.25in" width="2.1875in" stroke="0" fill="1"/>
+                <fill color="#444444"/>
+                <setFont name="Helvetica-Bold" size="12"/>
+                <drawString x="3.609375in" y="0.3125in">BALANCE DUE:</drawString>
+
+                <translate dx="5.9375in" dy="0in"/>
+                <rotate degrees="90"/>
+                <!--<image file="itemize/templates/packing/logo.png" x="-40" y="-40" width="80" height="80"/>-->
+                <barCode x="-12" y="0" code="Code128" barHeight="0.125in" barWidth="0.009in">72e1c629</barCode>
+
+                <fill color="#000000"/>
+            </pageGraphics>
+
+            <!--<frame id="multiple-shipments-icon" x1="3.875in" y1="3.25in" width="0.25in" height="0.53125in" />-->
+            <frame id="shipped-address" x1="3.28125in" y1="2.90625in" width="2.46875in" height="0.25in" />
+            <frame id="billed-address" x1="3.28125in" y1="2.65625in" width="2.46875in" height="0.25in" />
+            <frame id="line-items" x1="0.25in" y1="1.3125in" width="5.5in" height="1.25in" />
+
+            <frame id="subtotal" x1="4.953125in" y1="1.09375in" width="0.75in" height="12" />
+            <frame id="tax-collected" x1="4.953125in" y1="0.90625in" width="0.75in" height="12" />
+            <frame id="shipping" x1="4.953125in" y1="0.71875in" width="0.75in" height="12" />
+            <frame id="amount-paid" x1="4.953125in" y1="0.53125in" width="0.75in" height="12" />
+            <frame id="balance-due" x1="4.953125in" y1="0.28125in" width="0.75in" height="14" />
+
+            <frame id="thank-you" x1="0.25in" y1="0.25in" width="3.125in" height="0.5in" />
+
+            <!--<frame id="content" x1="0in" y1="0in" width="6in" height="3.25in" />-->
+        </pageTemplate>
+
+    </template>
+
+    <stylesheet>
+        <!-- Conatins the style information for the document. -->
+        <blockTableStyle id="exampleTable">
+            <blockValign value="TOP" />
+            <blockAlignment value="LEFT" />
+            <blockTopPadding length="2" />
+            <blockBottomPadding length="2" />
+            <blockLeftPadding length="3" />
+            <blockRightPadding length="3" />
+            <lineStyle kind="LINEBELOW" colorName="silver" start="0,1" stop="-1,-2" />
+            <lineStyle kind="LINEAFTER" colorName="silver" start="0,1" stop="-2,-1" />
+            <blockFont name="Helvetica" size="9" start="0,1" stop="-1,-1" />
+
+            <blockTopPadding length="3" start="0,0" stop="-1,0" />
+            <blockBottomPadding length="3" start="0,0" stop="-1,0" />
+            <blockLeftPadding length="7" start="0,0" stop="-1,0" />
+            <blockRightPadding length="7" start="0,0" stop="-1,0" />
+            <blockFont name="Helvetica-Bold" size="11" start="0,0" stop="-1,0" />
+            <blockTextColor colorName="white" start="0,0" stop="-1,0" />
+            <blockBackground colorName="#3b5b86" start="0,0" stop="-1,0" />
+        </blockTableStyle>
+        <paraStyle 
+            name="style.centered"
+            fontName="Helvetica"
+            fontSize="8"
+            alignment="center" />
+    </stylesheet>
+
+    <story>
+        <!-- Contains all flowable elements of the document. -->
+        <!-- They fill up the frames defined in the template section. -->
+        <!--<para style="style.centered">-->
+        <!--    {{ name }}<br />-->
+        <!--    <font size="6" color="#3b5b86">{{ email }}</font>-->
+        <!--</para>-->
+
+        <!--<setNextTemplate name="contentPage" />-->
+        <!--<nextFrame />-->
+        <!--<illustration width="10cm" height="1cm">-->
+        <!--    <rotate degrees="90"/>-->
+        <!--    <barCode x="0in" y="0in" code="Code128" barHeight="0.5in" barWidth="0.009in">AB-12345678</barCode>-->
+        <!--</illustration>-->
+
+        <!--<nextFrame name="multiple-shipments-icon" />-->
+        <!--<illustration width="20" height="20">-->
+        <!--    <image file="itemize/templates/packing/notice.png" x="0" y="-0.03125in" width="0.25in" height="0.25in"/>-->
+        <!--</illustration>-->
+
+        <nextFrame name="shipped-address" />
+        <keepInFrame>
+            <para>
+                Example Shipping Address, 123 Test St, Testing, OK 12345
+            </para>
+        </keepInFrame>
+
+        <nextFrame name="billed-address" />
+        <keepInFrame>
+            <para>
+                Example Billing Address, 123 Test St, Testing, OK 12345
+            </para>
+        </keepInFrame>
+
+        <nextFrame name="line-items" />
+        <blockTable colWidths="1.0in, 3.0in, 0.75in, 0.75in">
+            <tr>
+                <td>SKU</td>
+                <td>Product</td>
+                <td>Quantity</td>
+                <td>Total</td>
+            </tr>
+            <tr>
+                <td>1234567890</td>
+                <td>Test Product 1 (Medium/Black)</td>
+                <td>90</td>
+                <td>$102.84</td>
+            </tr>
+            <tr>
+                <td>1234567890</td>
+                <td>Test Product 2 (Medium/Black)</td>
+                <td>90</td>
+                <td>$102.84</td>
+            </tr>
+            <tr>
+                <td>1234567890</td>
+                <td>Test Product 3 (Medium/Black)</td>
+                <td>90</td>
+                <td>$102.84</td>
+            </tr>
+            <tr>
+                <td>1234567890</td>
+                <td>Test Product 4 (Medium/Black)</td>
+                <td>90</td>
+                <td>$12.84</td>
+            </tr>
+        </blockTable>
+
+        <nextFrame name="subtotal"/>
+        <para alignment="center">
+            <font size="10">$102.84</font>
+        </para>
+        <nextFrame name="tax-collected"/>
+        <para alignment="center">
+            <font size="10">$12.34</font>
+        </para>
+        <nextFrame name="shipping"/>
+        <para alignment="center">
+            <font size="10">$12.34</font>
+        </para>
+        <nextFrame name="amount-paid"/>
+        <para alignment="center">
+            <font size="10">$12.34</font>
+        </para>
+        <nextFrame name="balance-due"/>
+        <para alignment="center">
+            <font size="12">$0.00</font>
+        </para>
+
+        <nextFrame name="thank-you"/>
+        <para>
+            TODO: Add some kind of thank you message and contact information here...
+        </para>
+    <!--    <spacer length="1cm" />-->
+
+    <!--    <blockTable style="exampleTable">-->
+    <!--        {% set header = False %}-->
+    <!--        {% for row in table %}-->
+    <!--            {% if header == False %}-->
+    <!--                <tr>-->
+    <!--                    {% for col in row %}-->
+    <!--                        <td>{{col.replace("_", " ").title()}}</td>-->
+    <!--                    {% endfor %}-->
+    <!--                    {% set header = True %}-->
+    <!--                </tr>-->
+    <!--            {% else %}-->
+    <!--                <tr>-->
+    <!--                    {% for col in row %}-->
+    <!--                        <td>{{ col }}</td>-->
+    <!--                    {% endfor %}-->
+    <!--                </tr>-->
+    <!--            {% endif %}-->
+    <!--        {% endfor %}-->
+    <!--    </blockTable>-->
+    </story>
+</document>

@@ -8,63 +8,59 @@
         <pageTemplate id="main">
             <pageGraphics>
                 <fill color="#eeeeee"/>
-                <rect x="0in" y="3.25in" height="0.75in" width="6in" stroke="0" fill="1"/>
+                <rect x="0" y="234" height="54" width="432" stroke="0" fill="1"/>
 
                 <fill color="#444444"/>
                 <setFont name="Helvetica-Bold" size="18"/>
-                <drawString x="0.25in" y="3.625in">Your Invoice</drawString>
+                <drawString x="18" y="261">Your Receipt</drawString>
 
                 <fill color="#444444"/>
                 <setFont name="Helvetica-Bold" size="10"/>
-                <drawString x="0.734375in" y="3.4375in">order 72e1c629</drawString>
+                <drawString x="57" y="248">order 72e1c629</drawString>
 
                 <fill color="#444444"/>
                 <setFont name="Helvetica" size="10"/>
-                <image file="itemize/templates/packing/notice.png" x="3.875in" y="3.46875in" width="0.25in" height="0.25in"/>
-                <drawString x="4.15625in" y="3.64375in">Your order has been split</drawString>
-                <drawString x="4.203125in" y="3.484375in">into multiple shipments.</drawString>
+                <image file="itemize/templates/packing/notice.png" x="279" y="250" width="18" height="18"/>
+                <drawString x="299" y="262">Your order has been split</drawString>
+                <drawString x="303" y="251">into multiple shipments.</drawString>
 
                 <fill color="#444444"/>
                 <setFont name="Helvetica-Bold" size="10"/>
-                <drawString x="2.5in" y="3in">shipped to:</drawString>
-                <drawString x="2.5in" y="2.75in">billed to:</drawString>
+                <drawString x="180" y="216">shipped to:</drawString>
+                <drawString x="180" y="198">billed to:</drawString>
 
                 <fill color="#444444"/>
                 <setFont name="Helvetica-Bold" size="10"/>
-                <drawString x="4.28125in" y="1.125in">subtotal:</drawString>
-                <drawString x="3.984375in" y="0.9375in">tax collected:</drawString>
-                <drawString x="4.25in" y="0.75in">shipping:</drawString>
-                <!--<drawString x="4.0in" y="0.6875in">amount paid:</drawString>-->
-                <drawString x="4.0in" y="0.5625in">amount paid:</drawString>
+                <drawString x="308" y="81">subtotal:</drawString>
+                <drawString x="287" y="68">tax collected:</drawString>
+                <drawString x="306" y="54">shipping:</drawString>
+                <drawString x="288" y="41">amount paid:</drawString>
 
                 <fill color="#eeeeee"/>
-                <rect x="3.5625in" y="0.25in" height="0.25in" width="2.1875in" stroke="0" fill="1"/>
+                <rect x="257" y="18" height="18" width="158" stroke="0" fill="1"/>
                 <fill color="#444444"/>
                 <setFont name="Helvetica-Bold" size="12"/>
-                <drawString x="3.609375in" y="0.3125in">BALANCE DUE:</drawString>
+                <drawString x="260" y="23">BALANCE DUE:</drawString>
 
-                <translate dx="5.9375in" dy="0in"/>
+                <translate dx="428" dy="0"/>
                 <rotate degrees="90"/>
-                <!--<image file="itemize/templates/packing/logo.png" x="-40" y="-40" width="80" height="80"/>-->
-                <barCode x="-12" y="0" code="Code128" barHeight="0.125in" barWidth="0.009in">72e1c629</barCode>
+                <barCode x="-12" y="0" code="Code128" barHeight="9" barWidth="0.009in">72e1c629</barCode>
 
                 <fill color="#000000"/>
             </pageGraphics>
 
-            <!--<frame id="multiple-shipments-icon" x1="3.875in" y1="3.25in" width="0.25in" height="0.53125in" />-->
-            <frame id="shipped-address" x1="3.28125in" y1="2.90625in" width="2.46875in" height="0.25in" />
-            <frame id="billed-address" x1="3.28125in" y1="2.65625in" width="2.46875in" height="0.25in" />
-            <frame id="line-items" x1="0.25in" y1="1.3125in" width="5.5in" height="1.25in" />
+            <frame id="shipped-address" x1="236" y1="209" width="178" height="18" />
+            <frame id="billed-address" x1="236" y1="191" width="178" height="18" />
+            <frame id="line-items" x1="18" y1="95" width="396" height="90" />
 
-            <frame id="subtotal" x1="4.953125in" y1="1.09375in" width="0.75in" height="12" />
-            <frame id="tax-collected" x1="4.953125in" y1="0.90625in" width="0.75in" height="12" />
-            <frame id="shipping" x1="4.953125in" y1="0.71875in" width="0.75in" height="12" />
-            <frame id="amount-paid" x1="4.953125in" y1="0.53125in" width="0.75in" height="12" />
-            <frame id="balance-due" x1="4.953125in" y1="0.28125in" width="0.75in" height="14" />
+            <frame id="subtotal" x1="357" y1="80" width="54" height="12" />
+            <frame id="tax-collected" x1="357" y1="66" width="54" height="12" />
+            <frame id="shipping" x1="357" y1="52" width="54" height="12" />
+            <frame id="amount-paid" x1="357" y1="38" width="54" height="12" />
+            <frame id="balance-due" x1="357" y1="20" width="54" height="14" />
 
-            <frame id="thank-you" x1="0.25in" y1="0.25in" width="3.125in" height="0.5in" />
+            <frame id="thank-you" x1="18" y1="18" width="225" height="36" />
 
-            <!--<frame id="content" x1="0in" y1="0in" width="6in" height="3.25in" />-->
         </pageTemplate>
 
     </template>
@@ -98,25 +94,6 @@
     </stylesheet>
 
     <story>
-        <!-- Contains all flowable elements of the document. -->
-        <!-- They fill up the frames defined in the template section. -->
-        <!--<para style="style.centered">-->
-        <!--    {{ name }}<br />-->
-        <!--    <font size="6" color="#3b5b86">{{ email }}</font>-->
-        <!--</para>-->
-
-        <!--<setNextTemplate name="contentPage" />-->
-        <!--<nextFrame />-->
-        <!--<illustration width="10cm" height="1cm">-->
-        <!--    <rotate degrees="90"/>-->
-        <!--    <barCode x="0in" y="0in" code="Code128" barHeight="0.5in" barWidth="0.009in">AB-12345678</barCode>-->
-        <!--</illustration>-->
-
-        <!--<nextFrame name="multiple-shipments-icon" />-->
-        <!--<illustration width="20" height="20">-->
-        <!--    <image file="itemize/templates/packing/notice.png" x="0" y="-0.03125in" width="0.25in" height="0.25in"/>-->
-        <!--</illustration>-->
-
         <nextFrame name="shipped-address" />
         <keepInFrame>
             <para>
@@ -192,24 +169,5 @@
         </para>
     <!--    <spacer length="1cm" />-->
 
-    <!--    <blockTable style="exampleTable">-->
-    <!--        {% set header = False %}-->
-    <!--        {% for row in table %}-->
-    <!--            {% if header == False %}-->
-    <!--                <tr>-->
-    <!--                    {% for col in row %}-->
-    <!--                        <td>{{col.replace("_", " ").title()}}</td>-->
-    <!--                    {% endfor %}-->
-    <!--                    {% set header = True %}-->
-    <!--                </tr>-->
-    <!--            {% else %}-->
-    <!--                <tr>-->
-    <!--                    {% for col in row %}-->
-    <!--                        <td>{{ col }}</td>-->
-    <!--                    {% endfor %}-->
-    <!--                </tr>-->
-    <!--            {% endif %}-->
-    <!--        {% endfor %}-->
-    <!--    </blockTable>-->
     </story>
 </document>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE document SYSTEM "rml.dtd">
+{% block document %}
+<document filename="output.pdf" xmlns:doc="http://namespaces.zope.org/rml/doc">
+
+    <template pagesize="(6in, 4in)" {% if test_mode %}showBoundary="1"{% endif %}>
+    {% block template %}
+    {% endblock %}
+    </template>
+
+    <stylesheet>
+    {% block stylesheet %}
+    {% endblock %}
+    </stylesheet>
+
+    <story>
+    {% block story %}
+    {% endblock %}
+    </story>
+</document>
+{% endblock %}

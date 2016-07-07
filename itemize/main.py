@@ -7,6 +7,7 @@ import logging
 import os
 import sys
 from argparse import ArgumentParser
+from decimal import Decimal
 from jinja2 import Environment, PackageLoader, FileSystemLoader
 from z3c.rml import rml2pdf
 
@@ -89,12 +90,27 @@ def main(argv):
     # Do preprocessing.
     logging.info('Rendering template.')
     rml_text = template.render({
+        'order_token': '72e1c629',
+        'shipping_address': (
+            'Example Shipping Address, 123 Test St, Testing, OK 12345'),
+        'billing_address': (
+            'Example Shipping Address, 123 Test St, Testing, OK 12345'),
+        'pages': [
+            [{'sku': '10001', 'description': 'Test Product 1', 'quantity': 1, 'total': Decimal('10.99')},
+             {'sku': '10002', 'description': 'Test Product 2', 'quantity': 2, 'total': Decimal('15.50')},
+             {'sku': '10003', 'description': 'Test Product 3', 'quantity': 3, 'total': Decimal('19.95')},
+             {'sku': '10004', 'description': 'Test Product 4', 'quantity': 4, 'total': Decimal('25.99')}
+            ]
+        ],
+        'split_shipment': True,
         'date': datetime.datetime.now().strftime("%Y-%m-%d"),
         'name': 'Company',
         'website': 'www.company.com',
         'email': 'sales@company.com',
         'table': table
     })
+
+    rml_text = rml_text.strip()
     logging.info('Rendered template.')
 
     # Generate PDF output.

@@ -1,173 +1,143 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE document SYSTEM "rml.dtd">
+{% extends "packing/base.rml.jinja2" %}
+{% import "packing/graphics.rml.jinja2" as graphics %}
 
-<document filename="packing-slip.pdf" xmlns:doc="http://namespaces.zope.org/rml/doc">
-    <!-- Don't remove any of the following main blocks, -->
-    <!-- otherwise the document will not compile. -->
-    <template pagesize="(6in, 4in)" showBoundary="1">
-        <pageTemplate id="main">
-            <pageGraphics>
-                <fill color="#eeeeee"/>
-                <rect x="0" y="234" height="54" width="432" stroke="0" fill="1"/>
+{% set test_mode = False %}
 
-                <fill color="#444444"/>
-                <setFont name="Helvetica-Bold" size="18"/>
-                <drawString x="18" y="261">Your Receipt</drawString>
+{% block template %}
+<pageTemplate id="single">
+    <pageGraphics>
+        <!--Create header.-->
+        {{ graphics.draw_header("#eeeeee") }}
+        {{ graphics.draw_heading(order_token) }}
+        {% if split_shipment %}
+            {{ graphics.draw_multiple_shipments_notice() }}
+        {% endif %}
+        {{ graphics.draw_address_fields() }}
+        {{ graphics.draw_receipt_fields() }}
+        {{ graphics.draw_barcode(order_token) }}
+        <!--Set fill color back to default.-->
+        <fill color="#000000"/>
+    </pageGraphics>
+    <frame id="line-items" x1="18" y1="95" width="396" height="90" />
+    {{ graphics.draw_address_frames() }}
+    {{ graphics.draw_receipt_frames() }}
+</pageTemplate>
 
-                <fill color="#444444"/>
-                <setFont name="Helvetica-Bold" size="10"/>
-                <drawString x="57" y="248">order 72e1c629</drawString>
+<pageTemplate id="first">
+    <pageGraphics>
+        {{ graphics.draw_header("#eeeeee") }}
+        {{ graphics.draw_heading(order_token) }}
+        {% if split_shipment %}
+            {{ graphics.draw_multiple_shipments_notice() }}
+        {% endif %}
+        {{ graphics.draw_address_fields() }}
+        {{ graphics.draw_barcode(order_token) }}
+        <!--Set fill color back to default.-->
+        <fill color="#000000"/>
+    </pageGraphics>
+    <frame id="line-items" x1="18" y1="18" width="396" height="167" />
+    {{ graphics.draw_address_frames() }}
+</pageTemplate>
 
-                <fill color="#444444"/>
-                <setFont name="Helvetica" size="10"/>
-                <image file="itemize/templates/packing/notice.png" x="279" y="250" width="18" height="18"/>
-                <drawString x="299" y="262">Your order has been split</drawString>
-                <drawString x="303" y="251">into multiple shipments.</drawString>
+<pageTemplate id="middle">
+    <pageGraphics>
+        {{ graphics.draw_header("#eeeeee") }}
+        {{ graphics.draw_heading(order_token) }}
+        {% if split_shipment %}
+            {{ graphics.draw_multiple_shipments_notice() }}
+        {% endif %}
+        <!--Set fill color back to default.-->
+        <fill color="#000000"/>
+    </pageGraphics>
+    <frame id="line-items" x1="18" y1="18" width="396" height="209" />
+</pageTemplate>
 
-                <fill color="#444444"/>
-                <setFont name="Helvetica-Bold" size="10"/>
-                <drawString x="180" y="216">shipped to:</drawString>
-                <drawString x="180" y="198">billed to:</drawString>
+<pageTemplate id="last">
+    <pageGraphics>
+        {{ graphics.draw_header("#eeeeee") }}
+        {{ graphics.draw_heading(order_token) }}
+        {% if split_shipment %}
+            {{ graphics.draw_multiple_shipments_notice() }}
+        {% endif %}
+        {{ graphics.draw_receipt_fields() }}
+        <!--Set fill color back to default.-->
+        <fill color="#000000"/>
+    </pageGraphics>
+    <frame id="line-items-last" x1="18" y1="95" width="396" height="132" />
+    {{ graphics.draw_receipt_frames() }}
+</pageTemplate>
+{% endblock %}
 
-                <fill color="#444444"/>
-                <setFont name="Helvetica-Bold" size="10"/>
-                <drawString x="308" y="81">subtotal:</drawString>
-                <drawString x="287" y="68">tax collected:</drawString>
-                <drawString x="306" y="54">shipping:</drawString>
-                <drawString x="288" y="41">amount paid:</drawString>
+{% block stylesheet %}
+<blockTableStyle id="line-items">
+    <blockValign value="MIDDLE" />
+    <blockAlignment value="CENTER" start="0,0" stop="-1,-1" />
+    <blockAlignment value="LEFT" start="1,0" stop="-3,-1" />
+    <blockTopPadding length="2" />
+    <blockBottomPadding length="2" />
+    <blockLeftPadding length="3" />
+    <blockRightPadding length="3" />
+    <lineStyle kind="GRID" thickness="1" colorName="silver" start="0,1" stop="-1,-1" />
+    <blockFont name="Helvetica" size="10" start="0,0" stop="-1,-1" />
 
-                <fill color="#eeeeee"/>
-                <rect x="257" y="18" height="18" width="158" stroke="0" fill="1"/>
-                <fill color="#444444"/>
-                <setFont name="Helvetica-Bold" size="12"/>
-                <drawString x="260" y="23">BALANCE DUE:</drawString>
+    <blockTopPadding length="3" start="0,0" stop="-1,0" />
+    <blockBottomPadding length="3" start="0,0" stop="-1,0" />
+    <blockLeftPadding length="7" start="0,0" stop="-1,0" />
+    <blockLeftPadding length="7" start="1,1" stop="1,-1" />
+    <blockRightPadding length="7" start="0,0" stop="-1,0" />
 
-                <translate dx="428" dy="0"/>
-                <rotate degrees="90"/>
-                <barCode x="-12" y="0" code="Code128" barHeight="9" barWidth="0.009in">72e1c629</barCode>
+    <blockFont name="Helvetica-Bold" size="10" start="0,0" stop="-1,0" />
+    <blockTextColor colorName="#eeeeee" start="0,0" stop="-1,0" />
+    <blockBackground colorName="#444444" start="0,0" stop="-1,0" />
+</blockTableStyle>
+{% endblock %}
 
-                <fill color="#000000"/>
-            </pageGraphics>
+{% block story %}
 
-            <frame id="shipped-address" x1="236" y1="209" width="178" height="18" />
-            <frame id="billed-address" x1="236" y1="191" width="178" height="18" />
-            <frame id="line-items" x1="18" y1="95" width="396" height="90" />
+{% if pages|length == 1 %}
 
-            <frame id="subtotal" x1="357" y1="80" width="54" height="12" />
-            <frame id="tax-collected" x1="357" y1="66" width="54" height="12" />
-            <frame id="shipping" x1="357" y1="52" width="54" height="12" />
-            <frame id="amount-paid" x1="357" y1="38" width="54" height="12" />
-            <frame id="balance-due" x1="357" y1="20" width="54" height="14" />
+    {{ graphics.draw_address_content(shipping_address, billing_address) }}
 
-            <frame id="thank-you" x1="18" y1="18" width="225" height="36" />
+<nextFrame name="line-items" />
+<blockTable style="line-items" colWidths="0.75in, 3.25in, 0.75in, 0.75in">
+    <tr><td>SKU</td><td>Product</td><td>Quantity</td><td>Total</td></tr>
+    {% set line_items = pages.pop() %}
+    {% for line_item in line_items %}
+    <tr>
+        <td>{{ line_item.sku }}</td>
+        <td>{{ line_item.description }}</td>
+        <td>{{ line_item.quantity }}</td>
+        <td>${{ line_item.total }}</td>
+    </tr>
+    {% endfor %}
+</blockTable>
+{% endif %}
 
-        </pageTemplate>
+{{ fill_receipt(subtotal="72.43", tax_collected="4.34", amount_paid="76.78") }}
 
-    </template>
+{% endblock %}
 
-    <stylesheet>
-        <!-- Conatins the style information for the document. -->
-        <blockTableStyle id="exampleTable">
-            <blockValign value="TOP" />
-            <blockAlignment value="LEFT" />
-            <blockTopPadding length="2" />
-            <blockBottomPadding length="2" />
-            <blockLeftPadding length="3" />
-            <blockRightPadding length="3" />
-            <lineStyle kind="LINEBELOW" colorName="silver" start="0,1" stop="-1,-2" />
-            <lineStyle kind="LINEAFTER" colorName="silver" start="0,1" stop="-2,-1" />
-            <blockFont name="Helvetica" size="9" start="0,1" stop="-1,-1" />
-
-            <blockTopPadding length="3" start="0,0" stop="-1,0" />
-            <blockBottomPadding length="3" start="0,0" stop="-1,0" />
-            <blockLeftPadding length="7" start="0,0" stop="-1,0" />
-            <blockRightPadding length="7" start="0,0" stop="-1,0" />
-            <blockFont name="Helvetica-Bold" size="11" start="0,0" stop="-1,0" />
-            <blockTextColor colorName="white" start="0,0" stop="-1,0" />
-            <blockBackground colorName="#3b5b86" start="0,0" stop="-1,0" />
-        </blockTableStyle>
-        <paraStyle 
-            name="style.centered"
-            fontName="Helvetica"
-            fontSize="8"
-            alignment="center" />
-    </stylesheet>
-
-    <story>
-        <nextFrame name="shipped-address" />
-        <keepInFrame>
-            <para>
-                Example Shipping Address, 123 Test St, Testing, OK 12345
-            </para>
-        </keepInFrame>
-
-        <nextFrame name="billed-address" />
-        <keepInFrame>
-            <para>
-                Example Billing Address, 123 Test St, Testing, OK 12345
-            </para>
-        </keepInFrame>
-
-        <nextFrame name="line-items" />
-        <blockTable colWidths="1.0in, 3.0in, 0.75in, 0.75in">
-            <tr>
-                <td>SKU</td>
-                <td>Product</td>
-                <td>Quantity</td>
-                <td>Total</td>
-            </tr>
-            <tr>
-                <td>1234567890</td>
-                <td>Test Product 1 (Medium/Black)</td>
-                <td>90</td>
-                <td>$102.84</td>
-            </tr>
-            <tr>
-                <td>1234567890</td>
-                <td>Test Product 2 (Medium/Black)</td>
-                <td>90</td>
-                <td>$102.84</td>
-            </tr>
-            <tr>
-                <td>1234567890</td>
-                <td>Test Product 3 (Medium/Black)</td>
-                <td>90</td>
-                <td>$102.84</td>
-            </tr>
-            <tr>
-                <td>1234567890</td>
-                <td>Test Product 4 (Medium/Black)</td>
-                <td>90</td>
-                <td>$12.84</td>
-            </tr>
-        </blockTable>
-
-        <nextFrame name="subtotal"/>
-        <para alignment="center">
-            <font size="10">$102.84</font>
-        </para>
-        <nextFrame name="tax-collected"/>
-        <para alignment="center">
-            <font size="10">$12.34</font>
-        </para>
-        <nextFrame name="shipping"/>
-        <para alignment="center">
-            <font size="10">$12.34</font>
-        </para>
-        <nextFrame name="amount-paid"/>
-        <para alignment="center">
-            <font size="10">$12.34</font>
-        </para>
-        <nextFrame name="balance-due"/>
-        <para alignment="center">
-            <font size="12">$0.00</font>
-        </para>
-
-        <nextFrame name="thank-you"/>
-        <para>
-            TODO: Add some kind of thank you message and contact information here...
-        </para>
-    <!--    <spacer length="1cm" />-->
-
-    </story>
-</document>
+{% macro fill_receipt(
+    subtotal="0.00", tax_collected="0.00", shipping="0.00",
+    amount_paid="0.00", balance_due="0.00", currency_symbol="$") %}
+    <nextFrame name="subtotal"/>
+    <para alignment="center">
+        <font size="10">{{ currency_symbol }}{{ subtotal }}</font>
+    </para>
+    <nextFrame name="tax-collected"/>
+    <para alignment="center">
+        <font size="10">{{ currency_symbol }}{{ tax_collected }}</font>
+    </para>
+    <nextFrame name="shipping"/>
+    <para alignment="center">
+        <font size="10">{{ currency_symbol }}{{ shipping }}</font>
+    </para>
+    <nextFrame name="amount-paid"/>
+    <para alignment="center">
+        <font size="10">{{ currency_symbol }}{{ amount_paid }}</font>
+    </para>
+    <nextFrame name="balance-due"/>
+    <para alignment="center">
+        <font size="12" color="#444444" name="Helvetica-Bold">{{ currency_symbol }}{{ balance_due }}</font>
+    </para>
+{%- endmacro %}

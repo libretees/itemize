@@ -1,0 +1,80 @@
+{% macro draw_header(color) %}
+    <!--Create header.-->
+    <fill color="{{ color }}"/>
+    <rect x="0" y="234" height="54" width="432" stroke="0" fill="1"/>
+{%- endmacro %}
+
+{% macro draw_heading(order_token) %}
+    <fill color="#444444"/>
+    <setFont name="Helvetica-Bold" size="18"/>
+    <drawString x="18" y="261">Your Receipt</drawString>
+
+    <fill color="#444444"/>
+    <setFont name="Helvetica-Bold" size="10"/>
+    <drawString x="57" y="248">order {{ order_token }}</drawString>
+{%- endmacro %}
+
+{% macro draw_barcode(order_token) %}
+    <translate dx="428" dy="0"/>
+    <rotate degrees="90"/>
+    <barCode x="-12" y="0" code="Code128" barHeight="9" barWidth="0.009in">{{ order_token }}</barCode>
+{%- endmacro %}
+
+{% macro draw_multiple_shipments_notice() %}
+    <fill color="#444444"/>
+    <setFont name="Helvetica" size="10"/>
+    <image file="itemize/templates/packing/notice.png" x="279" y="250" width="18" height="18"/>
+    <drawString x="299" y="262">Your order has been split</drawString>
+    <drawString x="303" y="251">into multiple shipments.</drawString>
+{%- endmacro %}
+
+{% macro draw_address_fields() %}
+    <fill color="#444444"/>
+    <setFont name="Helvetica-Bold" size="10"/>
+    <drawString x="180" y="216">shipped to:</drawString>
+    <drawString x="180" y="198">billed to:</drawString>
+{%- endmacro %}
+
+{% macro draw_address_frames() %}
+    <frame id="shipped-address" x1="236" y1="209" width="178" height="18" />
+    <frame id="billed-address" x1="236" y1="191" width="178" height="18" />
+{%- endmacro %}
+
+{% macro draw_address_content(shipping_address, billing_address) %}
+    <nextFrame name="shipped-address" />
+    <keepInFrame>
+        <para>
+            {{ shipping_address }}
+        </para>
+    </keepInFrame>
+
+    <nextFrame name="billed-address" />
+    <keepInFrame>
+        <para>
+            {{ billing_address }}
+        </para>
+    </keepInFrame>
+{%- endmacro %}
+
+{% macro draw_receipt_fields() %}
+    <fill color="#444444"/>
+    <setFont name="Helvetica-Bold" size="10"/>
+    <drawString x="319" y="81">subtotal:</drawString>
+    <drawString x="297" y="68">tax collected:</drawString>
+    <drawString x="316" y="54">shipping:</drawString>
+    <drawString x="298" y="41">amount paid:</drawString>
+
+    <fill color="#eeeeee"/>
+    <rect x="257" y="18" height="18" width="158" stroke="0" fill="1"/>
+    <fill color="#444444"/>
+    <setFont name="Helvetica-Bold" size="12"/>
+    <drawString x="270" y="23">BALANCE DUE:</drawString>
+{%- endmacro %}
+
+{% macro draw_receipt_frames() %}
+    <frame id="subtotal" x1="360" y1="80" width="54" height="12" />
+    <frame id="tax-collected" x1="360" y1="66" width="54" height="12" />
+    <frame id="shipping" x1="360" y1="52" width="54" height="12" />
+    <frame id="amount-paid" x1="360" y1="38" width="54" height="12" />
+    <frame id="balance-due" x1="360" y1="21" width="54" height="14" />
+{%- endmacro %}

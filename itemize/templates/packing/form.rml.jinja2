@@ -1,0 +1,74 @@
+{% macro fill_subheader_content(shipping_address=None, payment_date="Jan. 1, 1970", payment_method="generic", last_4=None) %}
+    <nextFrame name="shipped-address" />
+    <keepInFrame>
+        <para>
+            {{ shipping_address }}
+        </para>
+    </keepInFrame>
+
+    <nextFrame name="payment-date" />
+    <keepInFrame>
+        <para>
+            {{ payment_date }}
+        </para>
+    </keepInFrame>
+
+    <nextFrame name="payment-method" />
+    <illustration width="22" height="22">
+        <image file="itemize/templates/packing/images/{{ payment_method|lower }}.png" x="0" y="0" width="22" height="22" />
+    </illustration>
+
+    <nextFrame name="payment-last4" />
+    <keepInFrame>
+        <para alignment="right">
+            {% if last_4 %}-{{ last_4 }}{% endif %}
+        </para>
+    </keepInFrame>
+{%- endmacro %}
+
+{% macro fill_line_items(line_items, currency_symbol="$") %}
+    {% if line_items %}
+        <nextFrame name="line-items" />
+            <blockTable style="line-items" colWidths="0.75in, 3.25in, 0.75in, 0.75in">
+                <tr>
+                    <td>SKU</td>
+                    <td>Product</td>
+                    <td>Quantity</td>
+                    <td>Amount</td>
+                </tr>
+                {% for line_item in line_items %}
+                <tr>
+                    <td>{{ line_item.sku }}</td>
+                    <td>{{ line_item.description }}</td>
+                    <td>{{ line_item.quantity }}</td>
+                    <td>{{ currency_symbol }}{{ line_item.total }}</td>
+                </tr>
+                {% endfor %}
+            </blockTable>
+    {% endif %}
+{%- endmacro %}
+
+{% macro fill_receipt(
+    subtotal="0.00", sales_tax="0.00", shipping_cost="0.00", total="0.00",
+    balance_due="0.00", currency_symbol="$") %}
+    <nextFrame name="subtotal"/>
+    <para alignment="center">
+        <font size="10">{{ currency_symbol }}{{ subtotal }}</font>
+    </para>
+    <nextFrame name="tax-collected"/>
+    <para alignment="center">
+        <font size="10">{{ currency_symbol }}{{ sales_tax }}</font>
+    </para>
+    <nextFrame name="shipping"/>
+    <para alignment="center">
+        <font size="10">{{ currency_symbol }}{{ shipping_cost }}</font>
+    </para>
+    <nextFrame name="amount-paid"/>
+    <para alignment="center">
+        <font size="10">{{ currency_symbol }}{{ total }}</font>
+    </para>
+    <nextFrame name="balance-due"/>
+    <para alignment="center">
+        <font size="12" color="#444444" name="Helvetica-Bold">{{ currency_symbol }}{{ balance_due }}</font>
+    </para>
+{%- endmacro %}

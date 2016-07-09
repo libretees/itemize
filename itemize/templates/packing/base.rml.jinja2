@@ -3,7 +3,7 @@
 {% block document %}
 <document filename="output.pdf" xmlns:doc="http://namespaces.zope.org/rml/doc">
 
-    <template pagesize="(6in, 4in)" {% if test_mode %}showBoundary="1"{% endif %}>
+    <template pagesize="(6in, 4in)" {% if TEST_MODE %}showBoundary="1"{% endif %}>
     {% block template %}
     {% endblock %}
     </template>
@@ -13,7 +13,7 @@
     {% endblock %}
     </stylesheet>
 
-    <story>
+    <story {% block story_attrs %}{% endblock %}>
     {% block story %}
     {% endblock %}
     </story>

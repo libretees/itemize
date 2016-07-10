@@ -8,7 +8,7 @@ from z3c.rml import rml2pdf
 logger = logging.getLogger(__name__)
 
 class Document(object):
-    def __init__(self, template_name=None, data=None):
+    def __init__(self, template_name=None, data={}):
         self._template_name = template_name
         self._data = data
         self._template = None
@@ -72,7 +72,7 @@ class Document(object):
             connection = cups.Connection()
         except RuntimeError as e:
             logger.error(
-                'CUPS Server is not running! '
+                'Unable to connect to printer: CUPS server is not running. '
                 '(Hint: run `sudo /etc/init.d/cups start`).')
         else:
             printers = connection.getPrinters()

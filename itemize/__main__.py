@@ -1,4 +1,4 @@
 import sys
-import itemize.main
+from .main import main
 
-itemize.main.main(sys.argv[1:])
+main(sys.argv[1:])

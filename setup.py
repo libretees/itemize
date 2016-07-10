@@ -1,24 +1,32 @@
 #!/usr/bin/env python
-from distutils.core import setup
+# -*- coding: utf-8 -*-
+
+import os
+from setuptools import find_packages, setup
+
+templates_dir = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), 'itemize', 'templates')
 
 setup(
     name = 'itemize',
-    version = '0.1',
+    version = '0.2',
+    packages = find_packages(),
+    include_package_data = True,
+    package_data = {
+        os.path.join('templates', os.path.relpath(root, templates_dir)): files
+        for root, dirs, files in os.walk(templates_dir)
+        if '__pycache__' not in root
+    },
     description = 'Itemize generates receipts.',
     author = 'Jared Contrascere',
     author_email = 'jcontra@gmail.com',
     url = 'https://github.com/libretees/itemize',
-    install_requires=['lxml==3.4.4',
-                      'Pillow==2.8.2',
-                      'preppy==2.3.2',
-                      'Pygments==2.0.2',
-                      'PyPDF2==1.24',
-                      'reportlab==3.2.0',
-                      'svg2rlg==0.3',
-                      'z3c.rml==2.9.2',
-                      'zope.event==4.0.3',
-                      'zope.interface==4.1.2',
-                      'zope.schema==4.4.2',],
+    install_requires=['jinja2', 'pycups', 'z3c.rml'],
+    entry_points={
+        'console_scripts': [
+            'itemize = itemize.main:main',
+        ]
+    },
     classifiers=[
           'Development Status :: 3 - Alpha',
           'Intended Audience :: Developers',

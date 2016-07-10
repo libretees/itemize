@@ -4,6 +4,7 @@
 import json
 import logging
 import os
+import signal
 import stat
 import sys
 from argparse import ArgumentParser
@@ -44,7 +45,14 @@ def parse_arguments():
     return args
 
 
-def main(argv):
+def sigint_handler(signal, frame):
+    sys.exit()
+
+
+def main():
+    # Register SIGINT (Ctrl-C) handler.
+    signal.signal(signal.SIGINT, sigint_handler)
+
     args = parse_arguments()
     logger.debug('Parsed arguments: %s' % args)
 
@@ -65,10 +73,10 @@ def main(argv):
         sys.exit('Could not open input file (%s).\nExiting...' % relative_path)
     except TypeError as e:
         # If stdin is not piped or redirected, display a prompt.
+        logger.debug('Reading from stdin.')
         mode = os.fstat(sys.stdin.fileno()).st_mode
         if not (stat.S_ISFIFO(mode) or stat.S_ISREG(mode)):
             print('Reading from stdin. Use Ctrl-D to denote end-of file:')
-        logger.debug('Reading from stdin.')
         json_input = sys.stdin.read()
     else:
         logger.debug('Reading input file (%s).' % relative_path)

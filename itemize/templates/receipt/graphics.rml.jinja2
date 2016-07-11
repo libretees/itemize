@@ -7,14 +7,14 @@
 {% macro draw_multiple_shipments_notice() %}
     <fill color="#444444"/>
     <setFont name="Helvetica" size="10"/>
-    <image file="itemize/templates/receipt/images/notice.png" x="279" y="250" width="18" height="18"/>
+    <image file="{{ TEMPLATE_DIR }}/images/notice.png" x="279" y="250" width="18" height="18"/>
     <drawString x="299" y="262">Your order has been split</drawString>
     <drawString x="303" y="251">into multiple shipments.</drawString>
 {%- endmacro %}
 
 {% macro draw_header(order_token) %}
     <!--Create header.-->
-    <fill color="#eeeeee"/>
+    <fill color="#bbbbbb"/>
     <rect x="0" y="234" height="54" width="432" stroke="0" fill="1"/>
 
     <fill color="#444444"/>
@@ -29,14 +29,12 @@
 {% macro draw_subheader_fields() %}
     <fill color="#444444"/>
     <setFont name="Helvetica-Bold" size="10"/>
-    <!--<drawString x="180" y="216">shipped to:</drawString>-->
     <drawString x="166" y="216">payment date:</drawString>
     <drawString x="322" y="216">method:</drawString>
     <drawString x="180" y="198">shipped to:</drawString>
 {%- endmacro %}
 
 {% macro draw_subheader_frames() %}
-    <!--<frame id="shipped-address" x1="236" y1="209" width="178" height="18" />-->
     <frame id="payment-date" x1="236" y1="208" width="72" height="18" />
     <frame id="payment-method" x1="364" y1="209" width="22" height="22" />
     <frame id="payment-last4" x1="387" y1="208" width="27" height="18" />
@@ -51,7 +49,7 @@
     <drawString x="316" y="54">shipping:</drawString>
     <drawString x="298" y="41">amount paid:</drawString>
 
-    <fill color="#eeeeee"/>
+    <fill color="#bbbbbb"/>
     <rect x="257" y="18" height="18" width="158" stroke="0" fill="1"/>
     <fill color="#444444"/>
     <setFont name="Helvetica-Bold" size="12"/>

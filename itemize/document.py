@@ -29,9 +29,16 @@ class Document(object):
             logger.debug('Loading templates package with FileSystemLoader.')
             environment = Environment(loader=FileSystemLoader('templates'))
 
+        # Load Jinja2 template.
         template = environment.get_template(
             '%s/template.rml.jinja2' % template_name)
         logger.info('Loaded RML/Jinja2 Template.')
+
+        # Set TEMPLATE_DIR global.
+        environment.globals.update({
+            'TEMPLATE_DIR': os.path.relpath(
+                os.path.dirname(template.filename), os.getcwd())
+        })
 
         self._template = template
         return template
@@ -99,3 +106,7 @@ class Document(object):
     @property
     def filename(self):
         return self._filename
+
+    @property
+    def template(self):
+        return self._template

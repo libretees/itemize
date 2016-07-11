@@ -76,7 +76,7 @@ def main():
         logger.debug('Reading from stdin.')
         mode = os.fstat(sys.stdin.fileno()).st_mode
         if not (stat.S_ISFIFO(mode) or stat.S_ISREG(mode)):
-            print('Reading from stdin. Use Ctrl-D to denote end-of file:')
+            print('Reading from stdin. Use Ctrl-D to mark end-of file:')
         json_input = sys.stdin.read()
     else:
         logger.debug('Reading input file (%s).' % relative_path)

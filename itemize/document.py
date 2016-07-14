@@ -11,6 +11,7 @@ class Document(object):
     def __init__(self, template_name=None, data={}):
         self._template_name = template_name
         self._data = data
+        self._path = None
         self._template = None
         self._filename = None
         self._pdf = None
@@ -67,8 +68,9 @@ class Document(object):
 
         with open(path, 'wb') as pdf_file:
             pdf_file.write(self._pdf.read())
-        logger.info('Saved PDF document.')
+        logger.info('Saved PDF document (%s).' % filename)
 
+        self._path = path
         self._filename = filename
         return self._filename
 
@@ -93,11 +95,13 @@ class Document(object):
                 connection.enablePrinter(printer)
 
             if not self.filename:
+                logger.info('Creating temporary file.')
                 temporary_file = tempfile.NamedTemporaryFile()
                 self.save(temporary_file.name)
+                logger.info('Created temporary file (%s).' % self.path)
 
             logger.info('Printing document.')
-            connection.printFile(printer, self.filename, 'Label', {})
+            connection.printFile(printer, self.path, 'Label', {})
             printed = True
             logger.info('Printed document.')
 
@@ -106,6 +110,10 @@ class Document(object):
     @property
     def filename(self):
         return self._filename
+
+    @property
+    def path(self):
+        return self._path
 
     @property
     def template(self):

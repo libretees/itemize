@@ -16,7 +16,11 @@
     <nextFrame name="payment-method" />
     {% if payment_method %}
         <illustration width="22" height="22">
-            <image file="{{ TEMPLATE_DIR }}/images/{{ payment_method|lower }}.png" x="0" y="0" width="22" height="22" />
+            {% if payment_method|upper != 'AMERICAN EXPRESS' %}
+                <image file="{{ TEMPLATE_DIR }}/images/{{ payment_method|lower }}.png" x="0" y="0" width="22" height="22" />
+            {% else %}
+                <image file="{{ TEMPLATE_DIR }}/images/amex.png" x="0" y="0" width="22" height="22" />
+            {% endif %}
         </illustration>
     {% endif %}
 
